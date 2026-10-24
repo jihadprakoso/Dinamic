@@ -1,6 +1,11 @@
 <?php
 // ============================================================
-// Dinamic - Koneksi database & helper keamanan
+// Dinamic - Contoh konfigurasi koneksi database & helper keamanan
+// ============================================================
+// Salin file ini menjadi `config/db.php` lalu sesuaikan nilainya:
+//     cp config/db.example.php config/db.php
+// File asli (config/db.php) tidak ikut disimpan di repository karena
+// memuat kredensial environment lokal.
 // ============================================================
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -22,7 +27,8 @@ class Database {
     private $password = DB_PASS;
     public $conn;
 
-    public function getConnection() {
+    public function getConnection()
+    {
         $this->conn = null;
         try {
             $this->conn = new PDO(

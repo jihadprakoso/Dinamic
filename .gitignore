@@ -1,0 +1,5 @@
+# Konfigurasi lokal — jangan di-commit (berisi kredensial database)
+config/db.php
+
+# File sistem
+.DS_Store
