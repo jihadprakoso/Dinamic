@@ -12,6 +12,8 @@ try {
 
     // Handle New Transaction Post
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_transaction') {
+        verify_csrf();
+
         $barang_id = intval($_POST['barang_id']);
         $tipe = $_POST['tipe_transaksi']; // 'masuk' or 'keluar'
         $jumlah = intval($_POST['jumlah']);
@@ -175,6 +177,7 @@ try {
                 <button type="button" class="close-btn-custom" data-bs-dismiss="modal" aria-label="Close">&times;</button>
             </div>
             <form action="transaksi.php" method="POST">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="action" value="add_transaction">
                 <div class="modal-body p-4">
                     <div class="form-group-custom">
