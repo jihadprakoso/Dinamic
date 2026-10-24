@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Redirect if already logged in
 if (isset($_SESSION['user_id'])) {
@@ -11,6 +13,8 @@ require_once 'config/db.php';
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    verify_csrf();
+
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
@@ -27,11 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->rowCount() === 1) {
                 $user = $stmt->fetch();
                 if (password_verify($password, $user['password'])) {
-                    // Start session
+                    // Regenerate session id agar tidak rentan session fixation
+                    session_regenerate_id(true);
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['username'] = $user['username'];
                     $_SESSION['user_name'] = $user['name'];
-                    
+
                     header("Location: dashboard.php");
                     exit();
                 } else {
@@ -41,7 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = "Nama pengguna tidak ditemukan.";
             }
         } catch (PDOException $e) {
-            $error = "Terjadi kesalahan sistem: " . $e->getMessage();
+            error_log('Login error: ' . $e->getMessage());
+            $error = "Terjadi kesalahan pada sistem. Silakan coba lagi.";
         }
     } else {
         $error = "Silakan isi semua bidang.";
@@ -78,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form action="login.php" method="POST">
+            <?php echo csrf_field(); ?>
             <div class="form-group-custom text-start">
                 <label for="username" class="form-label-custom">Username</label>
                 <div class="position-relative">
