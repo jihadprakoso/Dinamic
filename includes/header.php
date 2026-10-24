@@ -10,13 +10,20 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $current_page = basename($_SERVER['PHP_SELF']);
+
+$page_titles = [
+    'dashboard.php' => 'Dashboard',
+    'barang.php'    => 'Data Barang',
+    'transaksi.php' => 'Transaksi Log',
+];
+$page_title = $page_titles[$current_page] ?? 'Panel Admin';
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stockbarang - Panel Admin</title>
+    <title><?php echo e($page_title); ?> - Stockbarang</title>
     
     <!-- Google Fonts & Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
