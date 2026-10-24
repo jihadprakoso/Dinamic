@@ -24,6 +24,8 @@ try {
 
     // CRUD Handlers
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        verify_csrf();
+
         // 1. ADD ITEM
         if (isset($_POST['action']) && $_POST['action'] === 'add') {
             $nama = trim($_POST['nama_barang']);
@@ -240,6 +242,7 @@ try {
                 <button type="button" class="close-btn-custom" data-bs-dismiss="modal" aria-label="Close">&times;</button>
             </div>
             <form action="barang.php" method="POST">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="action" value="add">
                 <div class="modal-body p-4">
                     <div class="form-group-custom">
@@ -291,6 +294,7 @@ try {
                 <button type="button" class="close-btn-custom" data-bs-dismiss="modal" aria-label="Close">&times;</button>
             </div>
             <form action="barang.php" method="POST">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="action" value="edit">
                 <input type="hidden" name="id" id="edit-id">
                 <div class="modal-body p-4">
@@ -333,6 +337,7 @@ try {
                 <button type="button" class="close-btn-custom" data-bs-dismiss="modal" aria-label="Close">&times;</button>
             </div>
             <form action="barang.php" method="POST">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="action" value="delete">
                 <input type="hidden" name="id" id="delete-id">
                 <div class="modal-body p-4 text-center">
